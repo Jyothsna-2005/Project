@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenzest - Current Status/Progress</title>
+    <link rel="icon" type="image/png" href="../static/assets/favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            justify-items: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .wrapper {
+            width: 1000px;
+            padding: 80px 40px;
+            justify-items: center;
+        }
+
+        .back-arrow {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .back-arrow img {
+            width: 18px;
+            height: 18px;
+        }
+
+        .header {
+            width: 500px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header-icon img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .header h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .header p {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #777;
+            max-width: 400px;
+            line-height: 1.6;
+        }
+
+        .dashboard {
+            display: flex;
+            gap: 20px;
+        }
+
+        .card {
+            width: 500px;
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+        }
+
+        .graph-container {
+            height: 260px;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .game-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            background: #f9fafb;
+        }
+
+        .game-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .sudoku {
+            background: #6366f1;
+        }
+
+        .tic {
+            background: #22c55e;
+        }
+
+        .word {
+            background: #f59e0b;
+        }
+
+        .memory {
+            background: #ef4444;
+        }
+
+        .game-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .game-time {
+            font-size: 11px;
+            color: #777;
+        }
+
+        .score {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        #gameList {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        @media(max-width: 900px) {
+            .dashboard {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <a class="back-arrow" onclick="window.location.href='/home';">
+        <img src="../static/assets/left.png" alt="">
+    </a>
+
+    <div class="wrapper">
+
+        <div class="header">
+            <div class="header-icon">
+                <img src="../static/assets/user_icon.png" alt="">
+            </div>
+            <h2 id="username">Tony Stark</h2>
+            <p>
+                Here you can view a detailed summary of your current progress, daily performance, and overall activity.
+            </p>
+        </div>
+
+        <div class="dashboard">
+
+            <div class="card">
+                <div class="card-title"><strong>Daily Questionnaire Progress</strong></div>
+                <div class="graph-container">
+                    <canvas id="chart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><strong>Recent Game Scores</strong></div>
+                <div id="gameList"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            // Fetch username
+            fetch('/get-user')
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('username').textContent = data.username;
+                });
+
+            // Fetch questionnaire progress
+            fetch('/get-progress')
+                .then(res => res.json())
+                .then(progressData => {
+
+                    const canvas = document.getElementById("chart");
+                    const ctx = canvas.getContext("2d");
+
+                    canvas.width = canvas.parentElement.offsetWidth;
+                    canvas.height = canvas.parentElement.offsetHeight;
+
+                    const days = progressData.map(d => d.day).reverse();
+
+                    // Convert score to percentage
+                    const maxScore = 30; // Maximum questionnaire score
+                    const scores = progressData.map(d =>
+                        (d.score / maxScore) * 100
+                    ).reverse();
+
+                    if (days.length === 0) return;
+
+                    const padding = 40;
+                    const w = canvas.width - padding * 2;
+                    const h = canvas.height - padding * 2;
+                    const max = 100;
+
+                    const stepX = days.length > 1 ? w / (days.length - 1) : w / 2;
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    // Draw axes
+                    ctx.beginPath();
+                    ctx.moveTo(padding, padding);
+                    ctx.lineTo(padding, canvas.height - padding);
+                    ctx.lineTo(canvas.width - padding, canvas.height - padding);
+                    ctx.strokeStyle = "#ccc";
+                    ctx.stroke();
+
+                    // Draw Y-axis labels (Scores)
+                    ctx.fillStyle = "#555";
+                    ctx.font = "12px Segoe UI";
+                    ctx.textAlign = "right";
+                    ctx.textBaseline = "middle";
+
+                    const ySteps = 5; // Number of intervals (0–100)
+
+                    for (let i = 0; i <= ySteps; i++) {
+                        const value = (max / ySteps) * i; // 0, 20, 40, 60, 80, 100
+                        const y = canvas.height - padding - (value / max) * h;
+
+                        // Draw score text
+                        ctx.fillText(value, padding - 8, y);
+
+                        // Optional: Draw horizontal grid lines for clarity
+                        ctx.beginPath();
+                        ctx.moveTo(padding, y);
+                        ctx.lineTo(canvas.width - padding, y);
+                        ctx.strokeStyle = "#eee";
+                        ctx.stroke();
+                    }
+
+                    // Draw X-axis labels (Dates)
+                    ctx.fillStyle = "#555";
+                    ctx.font = "12px Segoe UI";
+                    ctx.textAlign = "center";
+
+                    days.forEach((day, i) => {
+                        const x = days.length > 1
+                            ? padding + i * stepX
+                            : padding + w / 2;
+                        const y = canvas.height - padding + 15;
+                        ctx.fillText(day, x, y);
+                    });
+
+                    // Draw graph line (Percentage from Score)
+                    ctx.beginPath();
+                    ctx.strokeStyle = "#6366f1";
+                    ctx.lineWidth = 2;
+
+                    scores.forEach((val, i) => {
+                        const x = days.length > 1
+                            ? padding + i * stepX
+                            : padding + w / 2;
+
+                        const y = canvas.height - padding - (val / max) * h;
+
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    });
+
+                    ctx.stroke();
+                });
+
+            // Fetch game history
+            fetch('/get-games')
+                .then(res => res.json())
+                .then(gameHistory => {
+
+                    const gameList = document.getElementById("gameList");
+                    gameList.innerHTML = "";
+
+                    gameHistory.forEach(item => {
+
+                        let iconClass = "";
+                        let letter = "";
+
+                        if (item.game === "Sudoku") {
+                            iconClass = "sudoku"; letter = "S";
+                        } else if (item.game === "Tic Tac Toe") {
+                            iconClass = "tic"; letter = "T";
+                        } else if (item.game === "Memory Match") {
+                            iconClass = "memory"; letter = "M";
+                        } else {
+                            iconClass = "word"; letter = "W";
+                        }
+
+                        let rightValue = item.score;
+                        let label = "Score";
+
+                        if (item.game === "Memory Match") {
+                            rightValue = item.moves;
+                            label = "Moves";
+                        }
+
+                        const div = document.createElement("div");
+                        div.className = "game-item";
+
+                        div.innerHTML = `
+                            <div class="game-info">
+                                <div class="icon ${iconClass}">${letter}</div>
+                                <div>
+                                    <div class="game-name">${item.game}</div>
+                                    <div class="game-time">${item.time}</div>
+                                </div>
+                            </div>
+                            <div class="score">${label}: ${rightValue}</div>
+                        `;
+
+                        gameList.appendChild(div);
+                    });
+                });
+
+        });
+    </script>
+
+</body>
+
+</html>

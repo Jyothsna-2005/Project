@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Messages</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            color: #333;
+            background-color: #ffffff;
+            height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* HEADER STYLES */
+        .header {
+            background-color: #EAF5EF;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2b2b2b;
+            text-decoration: none;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #0066CC;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-login {
+            background-color: transparent;
+            color: rgb(61, 61, 61);
+            border: 2px solid #2b2b2b;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background-color: #2b2b2b;
+            color: white;
+        }
+
+        /* MAIN LAYOUT */
+        .main-content {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            height: calc(100vh - 200px);
+            overflow: hidden;
+            box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px,
+                rgba(0, 0, 0, 0.24) 0px 1px 2px;
+            border-radius: 10px;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 30%;
+            border-right: 1px solid #ddd;
+            background: #fafafa;
+            border-radius: 10px 0 0 10px;
+            overflow-y: auto;
+        }
+
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+
+        .user:hover {
+            background: #f0f0f0;
+        }
+
+        .user img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .user-email {
+            font-size: 12px;
+            color: #777;
+        }
+
+        /* CHAT */
+        .chat {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border-radius: 0 10px 10px 0;
+            overflow: hidden;
+        }
+
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f7f9fc;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .msg {
+            max-width: 60%;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border-radius: 18px;
+            font-size: 14px;
+        }
+
+        .left {
+            background: #e4e4e4;
+            align-self: flex-start;
+        }
+
+        .right {
+            background: #5b7cff;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .input-box {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #eee;
+        }
+
+        .input-box input {
+            flex: 1;
+            padding: 12px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+        }
+
+        .input-box button {
+            margin-left: 10px;
+            padding: 10px 16px;
+            border: none;
+            background: #5b7cff;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="navbar">
+                <div class="logo">
+                    <span class="logo-text">ZENZEST</span>
+                </div>
+                <nav class="nav-menu">
+                    <a href="/counsellor">Students</a>
+                    <a href="/counsellor-messages">Messages</a>
+                </nav>
+
+                <div class="auth-buttons" id="home-buttons">
+                    <a href="/"><button class="btn-login">Log Out</button></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ✅ CONTENT (separate from navbar) -->
+    <div class="page-content">
+        <div class="container">
+            <div class="main-content">
+
+                <div class="sidebar" id="userList"></div>
+
+                <div class="chat">
+                    <div id="chatBox" class="messages"></div>
+
+                    <div class="input-box">
+                        <input id="msgInput" placeholder="Type...">
+                        <button onclick="sendMessage()">➤</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedEmailFromURL = urlParams.get("email");
+
+    // SAFE Flask injection
+    let currentUserId = {{ user_id | tojson }};
+    let selectedUserId = null;
+
+    // Load assigned students
+    fetch('/get-assigned-students')
+        .then(res => res.json())
+        .then(users => {
+            const list = document.getElementById("userList");
+            list.innerHTML = "";
+
+            if (!users || users.length === 0) {
+                list.innerHTML = `
+        <p style="padding:20px; color:#777;">
+            No students assigned
+        </p>
+    `;
+
+                // 🚫 disable chat input
+                document.getElementById("msgInput").disabled = true;
+                document.getElementById("msgInput").placeholder = "No students available";
+
+                return;
+            }
+
+            users.forEach(user => {
+                const div = document.createElement("div");
+                div.className = "user";
+
+                div.innerHTML = `
+        <img src="../static/assets/user_icon.png">
+        <div class="user-info">
+          <div class="user-name">${user.name}</div>
+          <div class="user-email">${user.email}</div>
+        </div>
+      `;
+
+                div.onclick = () => {
+                    document.querySelectorAll('.user')
+                        .forEach(u => u.style.background = '');
+
+                    div.style.background = '#e0e0e0';
+                    selectUser(user.email);
+                };
+
+                list.appendChild(div);
+            });
+
+            if (selectedEmailFromURL) {
+                selectUser(selectedEmailFromURL);
+            } else if (users.length > 0) {
+                selectUser(users[0].email);
+            }
+        });
+
+    function selectUser(email) {
+        fetch('/get-user-id-by-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        })
+            .then(res => res.json())
+            .then(data => {
+                selectedUserId = data.user_id;
+                loadMessages();
+            });
+    }
+
+    function loadMessages() {
+        if (!selectedUserId) return;
+
+        fetch(`/get-messages/${selectedUserId}`)
+            .then(res => res.json())
+            .then(data => {
+                const chat = document.getElementById("chatBox");
+                chat.innerHTML = "";
+
+                data.forEach(msg => {
+                    const div = document.createElement("div");
+                    div.classList.add("msg");
+
+                    if (msg.sender == currentUserId) {
+                        div.classList.add("right");
+                    } else {
+                        div.classList.add("left");
+                    }
+
+                    div.innerText = msg.message;
+                    chat.appendChild(div);
+                });
+
+                chat.scrollTop = chat.scrollHeight;
+            });
+    }
+
+    function sendMessage() {
+        let input = document.getElementById("msgInput");
+        let text = input.value.trim();
+
+        if (!text || !selectedUserId) return;
+
+        fetch('/send-message', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                receiver_id: selectedUserId,
+                message: text
+            })
+        })
+            .then(() => {
+                input.value = "";
+                loadMessages();
+            });
+    }
+
+    // auto refresh chat
+    setInterval(loadMessages, 2000);
+
+    // enter key support
+    document.getElementById("msgInput").addEventListener("keypress", e => {
+        if (e.key === "Enter") sendMessage();
+    });
+</script>
+
+</html>

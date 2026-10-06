@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenzest - Games</title>
+    <link rel="icon" type="image/png" href="../static/assets/favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
+            max-height: 100vh;
+            padding: 60px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .card {
+            border-radius: 20px;
+            padding: 40px;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Card 1 - Sudoku (Red) */
+        .card-1 {
+            background: linear-gradient(135deg, #FF5757 0%, #FF7070 100%);
+            color: white;
+        }
+
+        /* Card 2 - Memory Match (White) */
+        .card-2 {
+            background: white;
+            color: #333;
+        }
+
+        /* Card 3 - Word Scramble (White) */
+        .card-3 {
+            background: white;
+            color: #333;
+        }
+
+        /* Card 4 - Tic Tac Toe (Blue) */
+        .card-4 {
+            background: linear-gradient(135deg, #5555FF 0%, #7070FF 100%);
+            color: white;
+        }
+
+        .card-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: -0.5px;
+        }
+
+        .card-subtitle {
+            font-size: 20px;
+            font-weight: 400;
+            opacity: 0.8;
+            margin-bottom: 25px;
+        }
+
+        .card-2 .card-subtitle,
+        .card-3 .card-subtitle {
+            color: #999;
+        }
+
+        .learn-more {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .card-2 .learn-more,
+        .card-3 .learn-more {
+            background: #333;
+            color: white;
+        }
+
+        .learn-more:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(1.1);
+        }
+
+        .card-2 .learn-more:hover,
+        .card-3 .learn-more:hover {
+            background: #555;
+        }
+
+        .card-image {
+            width: 200px;
+            height: 140px;
+            object-fit: cover;
+            margin-left: 30px;
+            flex-shrink: 0;
+            border-radius: 15px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-bottom: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            letter-spacing: 2px;
+        }
+
+
+        .header img {
+            position: absolute;
+            left: 0;
+            width: 40px;
+            cursor: pointer;
+        }
+
+
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .card {
+                padding: 30px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .card-image {
+                width: 150px;
+                height: 100px;
+                margin-left: 0;
+                margin-top: 20px;
+                border-radius: 15px;
+            }
+
+            .card-title {
+                font-size: 24px;
+            }
+
+            .card-subtitle {
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="header">
+            <img src="../static/assets/left.png" alt="" onclick="window.location.href='/home'">
+
+            GAMES COLLECTION
+        </div>
+        <div class="grid">
+            <!-- Card 1: Sudoku -->
+            <div class="card card-1" onclick="window.location.href='/Sudoku'">
+                <div class="card-content">
+                    <h2 class="card-title">Sudoku</h2>
+                    <p class="card-subtitle">Puzzle Game</p>
+                    <button class="learn-more">➤</button>
+                </div>
+                <img src="../static/assets/sudoku.jpeg" alt="Sudoku Game" class="card-image">
+            </div>
+
+            <!-- Card 2: Memory Match -->
+            <div class="card card-2" onclick="window.location.href='/MemoryGame'">
+                <div class="card-content">
+                    <h2 class="card-title">Memory Match</h2>
+                    <p class="card-subtitle">Card Game</p>
+                    <button class="learn-more">➤</button>
+                </div>
+                <img src="../static/assets/memory-match.png" alt="Memory Match Game" class="card-image">
+            </div>
+
+            <!-- Card 3: Word Scramble -->
+            <div class="card card-3" onclick="window.location.href='/WordScramble'">
+                <div class="card-content">
+                    <h2 class="card-title">Word Scramble</h2>
+                    <p class="card-subtitle">Word Game</p>
+                    <button class="learn-more">➤</button>
+                </div>
+                <img src="../static/assets/word-scramble.jpeg" alt="Word Scramble Game" class="card-image">
+            </div>
+
+            <!-- Card 4: Tic Tac Toe -->
+            <div class="card card-4" onclick="window.location.href='/TicTacToe'">
+                <div class="card-content">
+                    <h2 class="card-title">Tic Tac Toe</h2>
+                    <p class="card-subtitle">Strategy Game</p>
+                    <button class="learn-more">➤</button>
+                </div>
+                <img src="../static/assets/tictactoe.jpeg" alt="Tic Tac Toe Game" class="card-image">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

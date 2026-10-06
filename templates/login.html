@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Zenzest - Login</title>
+    <link rel="icon" type="image/png" href="../static/assets/favicon.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f3f3f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* MAIN CARD */
+        .container {
+            width: 900px;
+            /* reduced from 1100px */
+            height: 560px;
+            /* reduced from 650px */
+            background: #fff;
+            display: flex;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        /* LEFT SIDE */
+        .left {
+            width: 50%;
+            padding: 50px 60px;
+        }
+
+        .logo {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 70px;
+        }
+
+        h2 {
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        /* FORM */
+        form label {
+            font-size: 13px;
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        form input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            outline: none;
+        }
+
+        /* CHECKBOX */
+        .checkbox {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+
+            font-size: 12px;
+            color: #000000;
+            margin: 15px 0;
+
+            width: 100%;
+            background-color: transparent;
+        }
+
+        .checkbox span {
+            white-space: nowrap;
+        }
+
+        .checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+        }
+
+        .signup-btn {
+            width: 100%;
+            padding: 12px;
+            background: #111;
+            color: white;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .login-text {
+            margin-top: 20px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .login-text a {
+            color: #000;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .forgot {
+            text-align: end;
+            color: #000;
+            font-weight: 500;
+            font-size: 12px;
+            margin: 10px 0;
+            text-decoration: none;
+        }
+
+        /* RIGHT SIDE */
+        .right {
+            width: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* IMAGE CARD */
+        .image-card {
+            width: 80%;
+            height: 80%;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- LEFT SIDE -->
+        <div class="left">
+            <div class="logo">◎ ZENZEST</div>
+
+            <h2>Log In</h2>
+            {% if error %}
+            <p style="color: red; font-size: 13px; margin-top: 10px; text-align: center;">
+                {{ error }}
+            </p>
+            {% endif %}
+            <form method="POST" action="/">
+
+                <label>Email*</label>
+                <input type="email" name="email" placeholder="Enter your email" required />
+
+                <label>Password*</label>
+                <input type="password" name="password" placeholder="Enter your password" required />
+                <p class="forgot">
+                    <a href="/forgotpassword">Forgot Password?</a>
+                </p>
+
+                <button type="submit" class="signup-btn">Log In</button>
+
+                <p class="login-text">
+                    Dont't have an account? <a href="/signup">Sign Up</a>
+                </p>
+            </form>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="right">
+            <div class="image-card">
+                <img src="../static/assets/sign_in_image.png" />
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

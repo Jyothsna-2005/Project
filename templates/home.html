@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenzest</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background-color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* HEADER STYLES */
+        .header {
+            background-color: #EAF5EF;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2b2b2b;
+            text-decoration: none;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #0066CC;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-login {
+            background-color: transparent;
+            color: rgb(61, 61, 61);
+            border: 2px solid #2b2b2b;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background-color: #2b2b2b;
+            color: white;
+        }
+
+        .btn-message {
+            background-color: transparent;
+            color: rgb(61, 61, 61);
+            border: 2px solid #2b2b2b;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 40px;
+            padding: 7px 6px;
+        }
+
+        /* make image black initially */
+        .btn-message img {
+            filter: brightness(0);
+            transition: 0.3s;
+        }
+
+        /* on hover */
+        .btn-message:hover {
+            background-color: black;
+        }
+
+        .btn-message:hover img {
+            filter: brightness(0) invert(1);
+            /* turns black → white */
+        }
+
+        .hero {
+            background: #EAF5EF;
+            background: linear-gradient(180deg, rgba(234, 245, 239, 1) 22%, rgba(255, 255, 255, 1) 100%);
+            padding: 100px 0;
+            scroll-margin-top: 100px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .hero-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        /* LEFT TEXT */
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero-label {
+            color: #4CAF50;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .hero-title {
+            font-size: 42px;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .hero-desc {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .btn-getstarted {
+            background: #2b2b2b;
+            color: white;
+            padding: 12px 28px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-getstarted:hover {
+            background-color: #151515;
+        }
+
+        /* RIGHT IMAGE */
+        .hero-image {
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-image img {
+            width: 99%;
+            max-width: 1100px;
+        }
+
+        /* ADVANTAGES SECTION */
+        .advantages {
+            padding: 60px 0;
+            background-color: #ffffff;
+        }
+
+        .advantages-wrapper {
+            height: 500px;
+            display: flex;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .advantages-text {
+            flex: 1;
+        }
+
+        .advantages-text h2 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 40px;
+            line-height: 1.3;
+        }
+
+        .advantages-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 25px;
+        }
+
+        .advantage-item {
+            display: flex;
+            gap: 15px;
+        }
+
+        .checkmark {
+            width: 28px;
+            height: 28px;
+            background-color: #E8F5E9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .advantage-item h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 5px;
+        }
+
+        .advantage-item p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .advantages-image {
+            width: 300px;
+            height: 300px;
+            margin-bottom: 100px;
+
+        }
+
+        .advantages-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+
+        /* SERVICES SECTION */
+        .services {
+            padding: 60px 0;
+            background-color: #ffffff;
+            scroll-margin-top: 100px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .service-box {
+            text-align: center;
+            padding: 30px;
+            border-radius: 12px;
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+
+        .service-box:hover {
+            background-color: #f0f6ff;
+            transform: translateY(-5px);
+        }
+
+        .service-icon {
+            width: 100%;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+
+        .service-box h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+
+        .service-box p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+
+        /* FOOTER SECTION */
+        .footer {
+            background-color: #f5f5f5;
+            padding: 60px 0 30px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-around;
+            /* THIS is the key */
+            align-items: flex-start;
+            gap: 40px;
+
+            margin-bottom: 50px;
+            padding-bottom: 50px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .footer-section h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section a {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #0066CC;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #0066CC;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: #0052a3;
+        }
+
+        .app-links {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .app-link {
+            background-color: #1a1a1a;
+            color: white;
+            padding: 10px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .app-link:hover {
+            background-color: #333;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .footer-info {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .logo-footer {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2b2b2b;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .contact-info p {
+            margin: 0;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #0066CC;
+        }
+
+        .copyright {
+            text-align: right;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .copyright p {
+            margin: 0;
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 1024px) {
+            .categories-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+
+            .courses-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-top {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .hero-content {
+                flex-direction: column;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .categories-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+
+            .advantages-wrapper {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .advantages-text h2 {
+                font-size: 28px;
+            }
+
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-top {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-info {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .copyright {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .hero-title {
+                font-size: 28px;
+            }
+
+            .categories-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .nav-menu {
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .nav-link {
+                font-size: 12px;
+            }
+
+            .auth-buttons {
+                gap: 8px;
+            }
+
+            .btn-login,
+            .btn-register {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .btn-message {
+                width: 00px;
+            }
+
+        }
+    </style>
+    <link rel="icon" type="image/png" href="../static/assets/favicon.png">
+</head>
+
+<body>
+    <!-- HEADER/NAVIGATION -->
+    <header class="header">
+        <div class="container">
+            <div class="navbar">
+                <div class="logo">
+                    <span class="logo-text">ZENZEST</span>
+                </div>
+                <nav class="nav-menu">
+                    <a href="#" class="nav-link" onclick="loadPage('home')">Home</a>
+                    <a href="#" class="nav-link" onclick="loadPage('/mh')">Mental Health Tips</a>
+                    <a href="#" class="nav-link" onclick="loadPage('/About')">About</a>
+                    <a href="#" class="nav-link" onclick="loadPage('/Contact')">Contact</a>
+                </nav>
+
+                <div class="auth-buttons" id="home-buttons">
+                    <a href="/StudentMessage"><button class="btn-message"><img src="../static/assets/message-icon.png" alt=""
+                                width="20px"></button></a>
+                    <a href="#services"><button class="btn-login">Get Started</button></a>
+                    <a href="/"><button class="btn-login">Log Out</button></a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div id="home-content">
+        <!-- HERO SECTION -->
+        <section class="hero" id="hero">
+            <div class="container hero-wrapper">
+
+                <!-- LEFT CONTENT -->
+                <div class="hero-text">
+                    <p class="hero-label">Your Mental Health Matters</p>
+
+                    <h1 class="hero-title">
+                        Understand your Mind, Improve your Well-Being
+                    </h1>
+
+                    <p class="hero-desc">
+                        A safe space for students to check their mental health, reflect through journaling, and relax
+                        with
+                        mindful activities
+                    </p>
+                    <a href="#services">
+                        <button class="btn-getstarted">Get Started</button></a>
+                </div>
+
+                <!-- RIGHT IMAGE + FLOATING ELEMENT -->
+                <div class="hero-image">
+
+                    <!-- Mental Health Image -->
+                    <img src="../static/assets/hero-background.png" alt="mental health">
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SERVICES SECTION -->
+        <section class="services" id="services">
+            <div class="container">
+                <div class="services-grid">
+                    <div class="service-box" onclick="window.location.href='/Questionnaire - Start'">
+                        <div class="service-icon">
+                            <img src="../static/assets/questionnaire-icon.png" alt="" width=" 100px">
+                        </div>
+                        <h3>Questionnaire Session</h3>
+                        <p>Take a quick self-assessment to understand your mental <br> well-being.</p>
+                    </div>
+
+                    <div class="service-box" onclick="window.location.href='/Diary'">
+                        <div class="service-icon">
+                            <img src="../static/assets/diary-icon.png" alt="" width="100px" height="100px">
+
+                        </div>
+                        <h3>Personal Diary</h3>
+                        <p>Express your thoughts and track your feelings in your private journal</p>
+                    </div>
+
+                    <div class="service-box" onclick="window.location.href='/Games'">
+                        <div class="service-icon">
+                            <img src="../static/assets/games-icon.png"" alt="" width=" 100px">
+
+                        </div>
+                        <h3>Games</h3>
+                        <p>Play relaxing games that help reduce stress and improve focus.</p>
+                    </div>
+
+                    <div class="service-box" onclick="window.location.href='/Current-Status'">
+                        <div class="service-icon">
+                            <img src="../static/assets/current-status-icon.png" alt="" width="100px" height="100px">
+                        </div>
+                        <h3>Current Status</h3>
+                        <p>Track your progress and stay motivated as you move forward</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADVANTAGES SECTION -->
+        <section class="advantages">
+            <div class="container">
+                <div class="advantages-wrapper">
+                    <div class="advantages-text">
+                        <h2>The Benefits of Your Mental Wellness System</h2>
+                        <div class="advantages-list">
+                            <div class="advantage-item">
+                                <div class="checkmark">✓</div>
+                                <div>
+                                    <h4>Self-Awareness Through Reflection</h4>
+                                    <p>Answer guided questionnaires to better understand your thoughts, emotions, and
+                                        patterns</p>
+                                </div>
+                            </div>
+                            <div class="advantage-item">
+                                <div class="checkmark">✓</div>
+                                <div>
+                                    <h4>Personal Space for Expression</h4>
+                                    <p>Maintain a private diary to capture daily experiences, thoughts, and feelings
+                                        freely.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="advantage-item">
+                                <div class="checkmark">✓</div>
+                                <div>
+                                    <h4>Mind-Boosting Activities</h4>
+                                    <p>Engage in interactive games designed to improve focus, memory, and mental
+                                        clarity.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="advantage-item">
+                                <div class="checkmark">✓</div>
+                                <div>
+                                    <h4>Track Your Mental Well-being</h4>
+                                    <p>Monitor your current status and observe changes in your mood and mindset over
+                                        time.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="advantages-image">
+                        <img src="../static/assets/mental-health.png" alt="Mental Health" height="50px" width="50px">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <iframe id="page-frame" style="width:100%; height:100vh; border:none; display:none;"></iframe>
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-section">
+                    <h4>System</h4>
+                    <ul>
+                        <li><a href="/mh">Mental Health Tips</a></li>
+                        <li><a href="/About">About</a></li>
+                        <li><a href="/Contact">Contact</a></li>
+                        <li><a href="/PrivacyPolicy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Modules</h4>
+                    <ul>
+                        <li><a href="/Questionnaire - Start">Questionnaire</a></li>
+                        <li><a href="/Diary">Personal Diary</a></li>
+                        <li><a href="/Games">Games</a></li>
+                        <li><a href="/Current-Status">Current Status</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-info">
+                    <div class="contact-info">
+                        <div class="logo-footer">ZENZEST</div>
+                        <p>📞 +1234 5678 9101</p>
+                        <p>📧 zenzest@gmail.com</p>
+                        <p>Copyright © 2025, Zenzest </p>
+                    </div>
+                </div>
+            </div>
+    </footer>
+
+    <script src="mainpage.js"></script>
+    <script>
+        function loadPage(page) {
+            const home = document.getElementById('home-content');
+            const frame = document.getElementById('page-frame');
+            const buttons = document.getElementById('home-buttons');
+
+            // ✅ IMMEDIATE RESPONSE (this removes delay)
+            if (page !== 'home') {
+                buttons.style.visibility = 'hidden';
+            } else {
+                buttons.style.visibility = 'visible';
+            }
+
+            // ⏳ Let browser apply UI change instantly
+            setTimeout(() => {
+                if (page === 'home') {
+                    home.style.display = 'block';
+                    frame.style.display = 'none';
+                    frame.src = "";
+                } else {
+                    home.style.display = 'none';
+                    frame.style.display = 'block';
+                    frame.src = page;
+                }
+
+                window.scrollTo(0, 0);
+            }, 0); // runs next frame
+        }
+    </script>
+</body>
+
+</html>

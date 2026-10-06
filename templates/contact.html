@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zenzest - Contact Us</title>
+    <link rel="icon" type="image/png" href="../static/assets/favicon.png">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #eef2f7, #ffffff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+
+        /* Main Card */
+        .contact-card {
+            width: 420px;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 30px 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        /* Title */
+        h1 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            margin-top: 10px;
+        }
+
+        /* Description */
+        .description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        /* Contact Items */
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin: 18px 0;
+            text-align: left;
+        }
+
+        .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        .contact-text {
+            flex: 1;
+        }
+
+        .contact-text strong {
+            display: block;
+            font-size: 15px;
+        }
+
+        .contact-text span {
+            font-size: 13px;
+            color: #777;
+        }
+
+        /* Button */
+        .contact-btn {
+            margin-top: 25px;
+            background: #dff3ea;
+            color: #1a7f5a;
+            padding: 12px;
+            border-radius: 25px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .contact-btn:hover {
+            background: #cdeadd;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="contact-card">
+
+
+        <h1>Get in Touch</h1>
+
+        <div class="description">
+            Have questions or feedback about ZenZest? Reach out to us anytime — we're here to help and improve your
+            experience.
+        </div>
+
+        <div class="contact-item">
+            <div class="icon">📧</div>
+            <div class="contact-text">
+                <strong>Email</strong>
+                <span>zenzest.support@gmail.com</span>
+            </div>
+        </div>
+
+        <div class="contact-item">
+            <div class="icon">📞</div>
+            <div class="contact-text">
+                <strong>Phone</strong>
+                <span>+91 98765 43210</span>
+            </div>
+        </div>
+
+        <div class="contact-item">
+            <div class="icon">📸</div>
+            <div class="contact-text">
+                <strong>Instagram</strong>
+                <span>@zenzest_official</span>
+            </div>
+        </div>
+
+        <div class="contact-btn">Send a Message</div>
+
+    </div>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+</body>
+
+</html>

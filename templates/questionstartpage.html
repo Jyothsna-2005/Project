@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Zenzest - Questionnaire</title>
+    <link rel="icon" type="image/png" href="../static/assets/favicon.png">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Main layout */
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 1100px;
+        }
+
+        /* Left text section */
+
+        .text-section {
+            max-width: 520px;
+        }
+
+        .text-section h1 {
+            font-size: 40px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            color: #000;
+        }
+
+        .text-section p {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 40px;
+        }
+
+        /* Start Button */
+
+        .start-btn {
+            display: inline-block;
+            background: black;
+            color: white;
+            padding: 10px 45px;
+            font-size: 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .start-btn:hover {
+            opacity: 0.85;
+        }
+
+        /* Image section */
+
+        .image-section img {
+            width: 460px;
+        }
+
+        .back-arrow {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 26px;
+            text-decoration: none;
+            color: #444;
+            cursor: pointer;
+        }
+
+        .back-arrow img {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            padding: 50px;
+            width: 40px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <a class="back-arrow" onclick=" window.location.replace('/home');"><img src="../static/assets/left.png" alt=""></a>
+
+
+    <div class="container">
+
+        <div class="text-section">
+
+            <h1>
+                What is your <br>
+                Mental Wellbeing <br>
+                Score?
+            </h1>
+
+            <p>
+                Small steps to a calmer mind.
+                Take a short questionnaire to better understand your mental wellbeing.
+            </p>
+
+            <a href="/Questionnaire" class="start-btn">
+                Start
+            </a>
+
+        </div>
+
+        <div class="image-section">
+            <img src="../static/assets/brainedit.png" alt="Healing Takes Time">
+        </div>
+
+    </div>
+
+</body>
+
+<script>
+    // Replace current history entry so us  er can't go back to quiz
+    history.replaceState(null, null, location.href);
+
+    // When back button is clicked → go to Home page
+    window.addEventListener("popstate", function () {
+        window.location.replace("/home"); // 👈 change this
+    });
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+</html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Counsellor Panel</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            background-color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* HEADER STYLES */
+        .header {
+            background-color: #EAF5EF;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2b2b2b;
+            text-decoration: none;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #0066CC;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-login {
+            background-color: transparent;
+            color: rgb(61, 61, 61);
+            border: 2px solid #2b2b2b;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background-color: #2b2b2b;
+            color: white;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        .container1 {
+            width: 90%;
+            margin: 0 auto;
+            justify-items: center;
+        }
+
+        h2 {
+            padding: 20px 0px 0px 150px;
+        }
+
+        /* CARDS */
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            width: 90%;
+            padding: 20px 0;
+        }
+
+        /* CARD */
+        .card {
+            background: #f7f8fa;
+            height: 120px;
+            align-content: center;
+            padding: 15px;
+            border-radius: 12px;
+            transition: 0.2s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+        }
+
+        /* INNER LAYOUT */
+        .card-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* PROFILE IMAGE */
+        .avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #e0e0e0;
+        }
+
+        /* TEXT */
+        .info h4 {
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+
+        .info p {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        /* LINK */
+        .info a {
+            font-size: 12px;
+            color: #5b7cff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .info a:hover {
+            text-decoration: underline;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            width: 150px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- HEADER/NAVIGATION -->
+    <header class="header">
+        <div class="container">
+            <div class="navbar">
+                <div class="logo">
+                    <span class="logo-text">ZENZEST</span>
+                </div>
+                <nav class="nav-menu">
+                    <a href="/counsellor">Students</a>
+                    <a href="/counsellor-messages">Messages</a>
+                </nav>
+
+                <div class="auth-buttons" id="home-buttons">
+                    <a href="/"><button class="btn-login">Log Out</button></a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <h1 style="text-align: center; padding: 20px;">Counsellor Panel</h1>
+    <h2>Assigned Students</h2>
+    <div class="container1">
+        <div id="cardContainer" class="card-container"></div>
+    </div>
+
+    <script>
+        const container = document.getElementById("cardContainer");
+
+        fetch('/get-assigned-students')
+            .then(res => res.json())
+            .then(users => {
+                const container = document.getElementById("cardContainer");
+                container.innerHTML = "";
+
+                if (!users || users.length === 0) {
+                    container.innerHTML = `
+                        <p style="
+                            font-size:16px;
+                            color:#777;
+                            margin-top:10px;
+                                padding-left:5px;
+                        ">
+                            No students assigned
+                        </p>
+                    `;
+                    return;
+                }
+                users.forEach(user => {
+
+                    const card = document.createElement("div");
+                    card.className = "card";
+
+                    card.innerHTML = `
+                <div class="card-content">
+                    <img src="../static/assets/user_icon.png" class="avatar">
+
+                    <div class="info">
+                        <h4>${user.name}</h4>
+                        <p>${user.email}</p>
+                        <div class="actions">
+                            <a href="/student-profile?email=${user.email}">Profile</a>
+                            <a href="/counsellor-messages?email=${user.email}">Message</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+                    container.appendChild(card);
+                });
+            });
+    </script>
+
+</body>
+
+</html>

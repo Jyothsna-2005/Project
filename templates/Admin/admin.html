@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial;
+            background: #f8fafc;
+        }
+
+        .container {
+            width: 100%;
+            padding: 25px 150px;
+        }
+
+        .container1 {
+            height: 500px;
+            width: 100%;
+            padding: 0 25px;
+            justify-items: center;
+            margin-top: 70px;
+        }
+
+        .header {
+            background-color: #EAF5EF;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            color: #2b2b2b;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .btn-login {
+             background-color: transparent;
+            color: rgb(61, 61, 61);
+            border: 2px solid #2b2b2b;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-login:hover {
+            background-color: #2b2b2b;
+            color: white;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 70px;
+            margin: 20px 0 50px 0;
+        }
+
+        .tab {
+            padding: 10px 18px;
+            cursor: pointer;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+            font-size: 14px;
+            width: 300px;
+            height: 300px;
+            justify-items: center;
+            transition: 0.5s;
+        }
+
+        .tab img {
+            margin-left: 30px;
+            width: 200px;
+        }
+
+        .tab.active {
+            transform: scale(1.1);
+        }
+
+        /* TABLE */
+        table {
+            width: 1200px;
+            margin-top: 15px;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+        }
+
+        #content {
+            padding-bottom: 50px;
+        }
+
+        th,
+        td {
+            padding: 16px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f1f5f9;
+            font-weight: 600;
+            color: #444;
+        }
+
+        tr {
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        h2 {
+            margin-top: 10px;
+        }
+
+        /* ACTION MENU */
+        .actions {
+            position: relative;
+        }
+
+        .action-btn {
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .dropdown div {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .dropdown div:hover {
+            background: #f3f4f6;
+        }
+
+        .actions.active .dropdown {
+            display: block;
+        }
+
+        /* BUTTON (MATCH TABLE STYLE) */
+        .add-btn {
+            margin-top: 15px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: none;
+            background: #111;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .add-btn:hover {
+            background: #333;
+        }
+
+        table button {
+            border: none;
+            margin-right: 70px;
+            background-color: transparent;
+            color: rgb(0, 0, 153);
+        }
+
+        /* SLIDE PANEL */
+        .edit-panel {
+            position: fixed;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            background: white;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            transition: 0.3s;
+            z-index: 2000;
+        }
+
+        .edit-panel.active {
+            bottom: 0;
+        }
+
+        .edit-panel input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .edit-panel button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            background: black;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* OVERLAY */
+        .overlay {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            top: 0;
+            left: 0;
+            display: none;
+            z-index: 1500;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* DELETE POPUP */
+        .confirm-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            background: #f3f3f3;
+            padding: 35px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            z-index: 3000;
+            display: none;
+            text-align: center;
+
+            width: 420px;
+            max-width: 90%;
+        }
+
+        .confirm-box.active {
+            display: block;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* TEXT */
+        .confirm-box p {
+            font-size: 26px;
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+
+        /* BUTTON CONTAINER */
+        .confirm-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        /* BUTTONS */
+        .confirm-box button {
+            width: 140px;
+            height: 45px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* YES BUTTON */
+        .confirm-yes {
+            background: black;
+            color: white;
+        }
+
+        /* CANCEL BUTTON */
+        .confirm-no {
+            background: #dcdcdc;
+            color: #000000;
+        }
+
+        /* SUCCESS MESSAGE */
+        .success-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            background: white;
+            padding: 35px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            z-index: 3000;
+            display: none;
+            text-align: center;
+            width: 420px;
+            max-width: 90%;
+        }
+
+        .success-box.active {
+            display: block;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .success-box.success .icon {
+            color: #4CAF50;
+        }
+
+        .success-box.error .icon {
+            color: #f44336;
+        }
+
+        .success-box .icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .success-box p {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .success-box button {
+            padding: 10px 30px;
+            border: none;
+            border-radius: 8px;
+            background: #111;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .success-box button:hover {
+            background: #333;
+        }
+
+        /* QUESTION FORM MODAL */
+        .question-form {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            z-index: 3000;
+            display: none;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .question-form.active {
+            display: block;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .question-form h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #333;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .option-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option-item label {
+            font-weight: 600;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .option-inputs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .option-inputs input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .score-input {
+            width: 70px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+            justify-content: flex-end;
+        }
+
+        .form-actions button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-save {
+            background: #111;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #333;
+        }
+
+        .btn-cancel {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-cancel:hover {
+            background: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container">
+            <div class="navbar">
+                <span class="logo-text">ZENZEST</span>
+                <h1>Admin Panel</h1> <a href="/"><button class="btn-login">Log Out</button></a>
+            </div>
+        </div>
+    </header>
+    <div class="container1">
+        <div class="tabs">
+            <div class="tab " onclick="loadStudents(this)">
+                <img src="../../static/assets/student_icon.png" alt=""><br>
+                <h1>Students</h1>
+            </div>
+            <div class="tab" onclick="loadCounsellors(this)">
+                <img src="../../static/assets/counsellor_icon.png" alt=""><br>
+                <h1>Counsellors</h1>
+            </div>
+            <div class="tab" onclick="loadQuestions(this)">
+                <img src="../../static/assets/questions_icon.png" alt=""><br>
+                <h1>Questionnaire</h1>
+            </div>
+        </div>
+        <div id="content"></div>
+    </div>
+
+    <script>
+
+        let currentEditType = "";
+        let currentEditId = null;
+
+        // ===== SUCCESS MESSAGE FUNCTIONS =====
+        function showSuccessMessage(message) {
+            const successBox = document.getElementById("successBox");
+            const icon = successBox.querySelector(".icon");
+            document.getElementById("successText").textContent = message;
+            icon.textContent = "✓";
+            successBox.classList.add("active");
+            successBox.classList.add("success");
+            successBox.classList.remove("error");
+            document.getElementById("overlay").classList.add("active");
+        }
+
+        function showErrorMessage(message) {
+            const successBox = document.getElementById("successBox");
+            const icon = successBox.querySelector(".icon");
+            document.getElementById("successText").textContent = message;
+            icon.textContent = "✕";
+            successBox.classList.add("active");
+            successBox.classList.add("error");
+            successBox.classList.remove("success");
+            document.getElementById("overlay").classList.add("active");
+        }
+
+        function closeSuccessMessage() {
+            const successBox = document.getElementById("successBox");
+            successBox.classList.remove("active");
+            successBox.classList.remove("success");
+            successBox.classList.remove("error");
+            document.getElementById("overlay").classList.remove("active");
+        }
+
+        function setActiveTab(el) {
+            document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+            el.classList.add("active");
+        }
+
+
+        function openEditPanel(type, id, name, email, password = "", doctorName = "", doctorEmail = "") {
+            currentEditType = type;
+            currentEditId = id;
+
+            document.getElementById("editName").value = name;
+            document.getElementById("editEmail").value = email;
+            document.getElementById("editPassword").value = password;
+
+            const doctorReadonly = document.getElementById("editAssignedDoctorReadonly");
+            const assignedStudents = document.getElementById("counsellorAssignedStudents");
+
+            doctorReadonly.style.display = type === "student" ? "block" : "none";
+            assignedStudents.style.display = type === "counsellor" ? "block" : "none";
+            assignedStudents.innerHTML = "";
+
+            if (type === "student") {
+                doctorReadonly.value = doctorEmail ? `${doctorName} - ${doctorEmail}` : "Not Assigned";
+            } else if (type === "counsellor") {
+                assignedStudents.innerHTML = "<p style='font-size:13px; color:#555; margin:10px 0;'>Loading assigned students...</p>";
+
+                fetch(`/admin/get-counsellor-students/${id}`)
+                    .then(res => res.json())
+                    .then(students => {
+                        if (!students || students.length === 0) {
+                            assignedStudents.innerHTML = "<p style='font-size:13px; color:#555; margin:10px 0;'>No students available</p>";
+                            return;
+                        }
+
+                        assignedStudents.innerHTML = `
+                            <label style="font-size:13px; font-weight:600; color:#555;">Assigned Students</label>
+                            <div style="max-height:160px; overflow-y:auto; margin:10px 0; border:1px solid #ccc; border-radius:6px; padding:10px;">
+                                ${students.map(student => `
+                                    <label style="display:flex; gap:8px; align-items:center; font-size:13px; margin-bottom:8px;">
+                                        <input type="checkbox" class="assigned-student-checkbox" value="${student.email}" ${student.assigned ? 'checked' : ''} style="width:auto; margin:0;">
+                                        <span>${student.name} - ${student.email}</span>
+                                    </label>
+                                `).join('')}
+                            </div>
+                        `;
+                    });
+            }
+
+            document.getElementById("editPanel").classList.add("active");
+            document.getElementById("overlay").classList.add("active");
+        }
+        function closeEditPanel() {
+            document.getElementById("editPanel").classList.remove("active");
+            document.getElementById("overlay").classList.remove("active");
+        }
+
+        function confirmEdit() {
+            const name = document.getElementById("editName").value;
+            const email = document.getElementById("editEmail").value;
+            const password = document.getElementById("editPassword").value;
+
+            if (!name || !email || !password) {
+                showErrorMessage("Please fill in all fields");
+                return;
+            }
+
+            let url = "";
+            let reloadFn = null;
+            let itemType = "";
+            let body = {};
+
+            if (currentEditType === "student") {
+                url = "/admin/update-student";
+                reloadFn = loadStudents;
+                itemType = "Student";
+                body = {
+                    id: currentEditId,
+                    name,
+                    email,
+                    password
+                };
+            } else {
+                const assignedStudents = Array.from(document.querySelectorAll(".assigned-student-checkbox:checked"))
+                    .map(input => input.value);
+
+                url = "/admin/update-counsellor";
+                reloadFn = loadCounsellors;
+                itemType = "Counsellor";
+                body = {
+                    id: currentEditId,
+                    name,
+                    email,
+                    password,
+                    assigned_students: assignedStudents
+                };
+            }
+
+            fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            }).then(response => response.json())
+                .then(data => {
+                    closeEditPanel();
+                    showSuccessMessage(`${itemType} updated successfully!`);
+                    setTimeout(() => {
+                        closeSuccessMessage();
+                        reloadFn();
+                    }, 1500);
+                })
+                .catch(error => {
+                    showErrorMessage("Error updating details. Please try again.");
+                });
+        }
+
+        let deleteId = null;
+        let deleteType = "";
+        let deleteItemType = "";
+
+        function openDeletePopup(type, id) {
+            deleteType = type;
+            deleteId = id;
+            deleteItemType = type === "student" ? "Student" : (type === "counsellor" ? "Counsellor" : "Question");
+
+            document.getElementById("confirmBox").classList.add("active");
+            document.getElementById("overlay").classList.add("active");
+        }
+
+        function closeConfirm() {
+            document.getElementById("confirmBox").classList.remove("active");
+            document.getElementById("overlay").classList.remove("active");
+        }
+
+        function confirmDelete() {
+            let url = "";
+            let reloadFn = null;
+
+            if (deleteType === "student") {
+                url = `/admin/delete-student/${deleteId}`;
+                reloadFn = loadStudents;
+            } else if (deleteType === "counsellor") {
+                url = `/admin/delete-counsellor/${deleteId}`;
+                reloadFn = loadCounsellors;
+            } else if (deleteType === "question") {
+                url = `/admin/delete-question/${deleteId}`;
+                reloadFn = loadQuestions;
+            }
+
+            fetch(url, { method: "DELETE" })
+                .then(response => response.json())
+                .then(data => {
+                    closeConfirm();
+                    showSuccessMessage(`${deleteItemType} deleted successfully!`);
+                    setTimeout(() => {
+                        closeSuccessMessage();
+                        reloadFn();
+                    }, 1500);
+                })
+                .catch(error => {
+                    closeConfirm();
+                    showErrorMessage("Error deleting. Please try again.");
+                });
+        }
+
+        function setupOverlayHandler() {
+            const overlay = document.getElementById("overlay");
+            if (!overlay) return;
+
+            overlay.onclick = () => {
+                closeEditPanel();
+                closeConfirm();
+                closeQuestionForm();
+                closeSuccessMessage();
+            };
+        }
+
+
+        function loadStudents(el = null) {
+            if (el) setActiveTab(el);
+
+            fetch('/admin/get-students')
+                .then(res => res.json())
+                .then(data => {
+
+                    let html = `<h2>Students</h2>
+<table>
+<tr>
+<th>Sl No</th>
+<th>Name</th>
+<th>Email</th>
+<th>Password</th>
+<th>Assigned Doctor</th>
+<th>Actions</th>
+</tr>`;
+
+                    data.forEach((s, index) => {
+                        html += `
+<tr>
+<td>${index + 1}</td>
+<td>${s.name}</td>
+<td>${s.email}</td>
+<td>${s.password || ''}</td>
+<td>${s.doctor}</td>
+<td>
+    <button onclick="openEditPanel('student', ${s.id}, \`${s.name}\`, \`${s.email}\`, \`${s.password || ''}\`, \`${s.doctor || ''}\`, \`${s.doctor_email || ''}\`)">Edit</button>
+    <button onclick="openDeletePopup('student', ${s.id})">Delete</button>
+    <button onclick="viewProgress(${s.id})">View Progress</button>
+</td>
+</tr>`;
+                    });
+
+                    html += "</table>";
+                    document.getElementById("content").innerHTML = html;
+                });
+        }
+
+        function viewProgress(id) {
+            fetch(`/admin/get-progress/${id}`)
+                .then(res => res.json())
+                .then(data => {
+                    let html = `<h2>Progress</h2><table>
+<tr><th>Date</th><th>Score</th><th>%</th></tr>`;
+
+                    data.forEach(p => {
+                        html += `<tr>
+<td>${p.date}</td>
+<td>${p.score}</td>
+<td>${p.percentage}</td>
+</tr>`;
+                    });
+
+                    html += "</table>";
+                    document.getElementById("content").innerHTML = html;
+                });
+        }
+
+        function loadCounsellors(el = null) {
+            if (el) setActiveTab(el);
+
+            fetch('/admin/get-counsellors')
+                .then(res => res.json())
+                .then(data => {
+                    let html = `<h2>Counsellors</h2>
+<table>
+<tr>
+<th>Sl No</th>
+<th>Name</th>
+<th>Email</th>
+<th>Password</th>
+<th>Actions</th>
+</tr>`;
+
+                    data.forEach((c, index) => {
+                        html += `
+<tr>
+<td>${index + 1}</td>
+<td>${c.name}</td>
+<td>${c.email}</td>
+<td>${c.password || ''}</td>
+<td>
+    <button onclick="openEditPanel('counsellor', ${c.id}, \`${c.name}\`, \`${c.email}\`, \`${c.password || ''}\`)">Edit</button>
+    <button onclick="openDeletePopup('counsellor', ${c.id})">Delete</button>
+</td>
+</tr>`;
+                    });
+
+                    html += "</table>";
+                    document.getElementById("content").innerHTML = html;
+                });
+        }
+
+
+        function loadQuestions(el = null) {
+            if (el) setActiveTab(el);
+
+            fetch('/admin/get-questions')
+                .then(res => res.json())
+                .then(data => {
+                    let html = `<h2>Questionnaire</h2>
+<button class="add-btn" onclick="addQuestion()">Add Question</button>
+
+<table>
+<tr>
+<th>Sl No</th>
+<th>Question</th>
+<th>Actions</th>
+</tr>`;
+
+                    data.forEach((q, index) => {
+                        html += `
+<tr>
+<td>${index + 1}</td>
+<td>${q.question}</td>
+<td>
+    <button onclick="editQuestion(${q.id})">Edit</button>
+    <button onclick="deleteQuestion(${q.id})">Delete</button>
+</td>
+</tr>`;
+                    });
+
+                    html += "</table>";
+                    document.getElementById("content").innerHTML = html;
+                });
+        }
+
+        function deleteQuestion(id) {
+            openDeletePopup('question', id);
+        }
+
+        let currentQuestionId = null;
+
+        function openQuestionForm(id = null) {
+            currentQuestionId = id;
+
+            if (id) {
+                // Editing: Fetch question data
+                fetch('/admin/get-questions')
+                    .then(res => res.json())
+                    .then(data => {
+                        const question = data.find(q => q.id === id);
+                        if (question) {
+                            document.getElementById("questionText").value = question.question;
+                            document.getElementById("opt1").value = question.options[0];
+                            document.getElementById("opt2").value = question.options[1];
+                            document.getElementById("opt3").value = question.options[2];
+                            document.getElementById("opt4").value = question.options[3];
+                            document.getElementById("score1").value = question.scores[0];
+                            document.getElementById("score2").value = question.scores[1];
+                            document.getElementById("score3").value = question.scores[2];
+                            document.getElementById("score4").value = question.scores[3];
+                            document.getElementById("questionFormTitle").textContent = "Edit Question";
+                            document.getElementById("questionForm").classList.add("active");
+                            document.getElementById("overlay").classList.add("active");
+                        }
+                    });
+            } else {
+                // Adding: Clear form
+                document.getElementById("questionText").value = "";
+                document.getElementById("opt1").value = "";
+                document.getElementById("opt2").value = "";
+                document.getElementById("opt3").value = "";
+                document.getElementById("opt4").value = "";
+                document.getElementById("score1").value = 3;
+                document.getElementById("score2").value = 2;
+                document.getElementById("score3").value = 1;
+                document.getElementById("score4").value = 0;
+                document.getElementById("questionFormTitle").textContent = "Add New Question";
+                document.getElementById("questionForm").classList.add("active");
+                document.getElementById("overlay").classList.add("active");
+            }
+        }
+
+        function closeQuestionForm() {
+            document.getElementById("questionForm").classList.remove("active");
+            document.getElementById("overlay").classList.remove("active");
+        }
+
+        function saveQuestion() {
+            const questionText = document.getElementById("questionText").value.trim();
+            const opt1 = document.getElementById("opt1").value.trim();
+            const opt2 = document.getElementById("opt2").value.trim();
+            const opt3 = document.getElementById("opt3").value.trim();
+            const opt4 = document.getElementById("opt4").value.trim();
+            const score1 = parseInt(document.getElementById("score1").value);
+            const score2 = parseInt(document.getElementById("score2").value);
+            const score3 = parseInt(document.getElementById("score3").value);
+            const score4 = parseInt(document.getElementById("score4").value);
+
+            if (!questionText || !opt1 || !opt2 || !opt3 || !opt4) {
+                showErrorMessage("Please fill in all fields");
+                return;
+            }
+
+            const url = currentQuestionId ? "/admin/update-question" : "/admin/add-question";
+            const isEditing = currentQuestionId !== null;
+            const body = {
+                question: questionText,
+                opt1, score1,
+                opt2, score2,
+                opt3, score3,
+                opt4, score4
+            };
+
+            if (currentQuestionId) {
+                body.id = currentQuestionId;
+            }
+
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            }).then(response => response.json())
+                .then(data => {
+                    closeQuestionForm();
+                    const message = isEditing ? "Question updated successfully!" : "Question created successfully!";
+                    showSuccessMessage(message);
+                    setTimeout(() => {
+                        closeSuccessMessage();
+                        loadQuestions();
+                    }, 1500);
+                })
+                .catch(error => {
+                    showErrorMessage("Error saving question. Please try again.");
+                });
+        }
+
+        function editQuestion(id) {
+            openQuestionForm(id);
+        }
+
+        function addQuestion() {
+            openQuestionForm();
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            setupOverlayHandler();
+            loadStudents();
+        });
+
+    </script>
+
+    <div class="overlay" id="overlay"></div>
+
+    <!-- EDIT PANEL -->
+    <div class="edit-panel" id="editPanel">
+        <h3>Edit Details</h3>
+        <input type="text" id="editName" placeholder="Name">
+        <input type="email" id="editEmail" placeholder="Email">
+        <input type="text" id="editPassword" placeholder="Password">
+        <input type="text" id="editAssignedDoctorReadonly" placeholder="Assigned Doctor" readonly style="display:none; background:#f7f7f7;">
+        <div id="counsellorAssignedStudents" style="display:none;"></div>
+        <button onclick="confirmEdit()">Confirm</button>
+    </div>
+
+    <!-- DELETE CONFIRM -->
+    <div class="confirm-box" id="confirmBox">
+        <p>Are you sure you want to delete?</p>
+
+        <div class="confirm-actions">
+            <button class="confirm-yes" onclick="confirmDelete()">Yes</button>
+            <button class="confirm-no" onclick="closeConfirm()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- SUCCESS/ERROR MESSAGE -->
+    <div class="success-box" id="successBox">
+        <div class="icon">✓</div>
+        <p id="successText">Operation completed successfully!</p>
+        <button onclick="closeSuccessMessage()">OK</button>
+    </div>
+
+    <!-- QUESTION FORM MODAL -->
+    <div class="question-form" id="questionForm">
+        <h3 id="questionFormTitle">Add New Question</h3>
+
+        <div class="form-group">
+            <label>Question</label>
+            <input type="text" id="questionText" placeholder="Enter the question text">
+        </div>
+
+        <div style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;">
+            <label style="font-weight: 600; font-size: 14px; color: #333;">Options & Scores</label>
+            
+            <div class="options-container">
+                <div class="option-item">
+                    <label>Option 1</label>
+                    <div class="option-inputs">
+                        <input type="text" id="opt1" placeholder="Option A">
+                        <input type="number" id="score1" class="score-input" placeholder="Score" value="3">
+                    </div>
+                </div>
+
+                <div class="option-item">
+                    <label>Option 2</label>
+                    <div class="option-inputs">
+                        <input type="text" id="opt2" placeholder="Option B">
+                        <input type="number" id="score2" class="score-input" placeholder="Score" value="2">
+                    </div>
+                </div>
+
+                <div class="option-item">
+                    <label>Option 3</label>
+                    <div class="option-inputs">
+                        <input type="text" id="opt3" placeholder="Option C">
+                        <input type="number" id="score3" class="score-input" placeholder="Score" value="1">
+                    </div>
+                </div>
+
+                <div class="option-item">
+                    <label>Option 4</label>
+                    <div class="option-inputs">
+                        <input type="text" id="opt4" placeholder="Option D">
+                        <input type="number" id="score4" class="score-input" placeholder="Score" value="0">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button class="btn-cancel" onclick="closeQuestionForm()">Cancel</button>
+            <button class="btn-save" onclick="saveQuestion()">Save Question</button>
+        </div>
+    </div>
+</body>
+
+</html>

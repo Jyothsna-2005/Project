@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Tips</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #ffffff, #f0f0f0);
+            color: #333;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+
+            background: linear-gradient(to right, #ffffff, #f0f0f0);
+            /* blends with page */
+
+            text-align: center;
+            padding: 25px 0;
+            font-size: 28px;
+            font-weight: bold;
+
+            z-index: 1000;
+        }
+
+        .header img {
+            position: absolute;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 100px auto auto auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 5px;
+            background: #2c2c2c;
+            color: white;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: rgb(0, 0, 0);
+        }
+
+        .tip-box {
+            font-size: 18px;
+            margin: 10px;
+            font-weight: 500;
+        }
+
+        .favorites {
+            background: #ecf4ff;
+        }
+
+        /* Breathing circle */
+        .breathing {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+
+        .circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #90caf9;
+            animation: breathe 6s infinite;
+        }
+
+        @keyframes breathe {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.5);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <header>🧠 Mental Health Tips</header>
+    </div>
+
+    <div class="container">
+
+        <!-- Tip of the Day -->
+        <div class="card">
+            <h2>🌟 Tip of the Day</h2>
+            <button onclick="generateTip()">Generate Tip</button>
+            <div class="tip-box" id="dailyTip"></div>
+            <button onclick="saveTip()">❤️ Save Tip</button>
+        </div>
+
+        <!-- Mood Based Tips -->
+        <div class="card">
+            <h2>😊 Mood-Based Tips</h2>
+            <button onclick="showMood('happy')">Happy</button>
+            <button onclick="showMood('sad')">Sad</button>
+            <button onclick="showMood('stressed')">Stressed</button>
+            <div class="tip-box" id="moodTip"></div>
+        </div>
+
+        <!-- Static Tips -->
+        <div class="card">
+            <h2>🌿 Daily Wellness Tips</h2>
+            <ul>
+                <li>Stay hydrated</li>
+                <li>Take short study breaks</li>
+                <li>Practice deep breathing</li>
+                <li>Get enough sleep</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>🧘 Stress Management</h2>
+            <ul>
+                <li>Try 4-7-8 breathing</li>
+                <li>Write your thoughts</li>
+                <li>Listen to calming music</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>📚 Study-Life Balance</h2>
+            <ul>
+                <li>Create a realistic schedule</li>
+                <li>Take guilt-free breaks</li>
+                <li>Include hobbies</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>💬 Positive Thinking</h2>
+            <ul>
+                <li>Practice self-affirmations</li>
+                <li>Celebrate small wins</li>
+                <li>Avoid comparisons</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>🚨 When to Seek Help</h2>
+            <ul>
+                <li>Constant stress or sadness</li>
+                <li>Sleep problems</li>
+                <li>Loss of interest</li>
+            </ul>
+            <p><b>Seeking help is a sign of strength 💙</b></p>
+        </div>
+
+        <!-- Breathing Tool -->
+        <div class="card">
+            <h2>🫁 Breathing Exercise</h2>
+            <p>Follow the circle: Inhale → Hold → Exhale</p>
+            <div class="breathing">
+                <div class="circle"></div>
+            </div>
+        </div>
+
+        <!-- Favorites -->
+        <div class="card favorites">
+            <h2>❤️ Saved Tips</h2>
+            <ul id="favoritesList"></ul>
+        </div>
+
+    </div>
+
+    <footer>Made for Student Mental Wellness 💙</footer>
+
+    <script>
+        const tips = [
+            "Take a 5-minute break and stretch your body",
+            "Drink a glass of water right now",
+            "Write down one thing you're grateful for",
+            "Step outside for fresh air",
+            "Talk to a friend or family member",
+            "Listen to calming music"
+        ];
+
+        const moodTips = {
+            happy: "Keep spreading positivity and try something creative!",
+            sad: "It's okay to feel sad. Talk to someone you trust.",
+            stressed: "Take deep breaths and break tasks into small steps."
+        };
+
+        function generateTip() {
+            const random = tips[Math.floor(Math.random() * tips.length)];
+            document.getElementById("dailyTip").innerText = random;
+        }
+
+        function showMood(mood) {
+            document.getElementById("moodTip").innerText = moodTips[mood];
+        }
+
+        function saveTip() {
+            const tip = document.getElementById("dailyTip").innerText;
+            if (tip === "") return;
+
+            let list = document.getElementById("favoritesList");
+            let li = document.createElement("li");
+            li.innerText = tip;
+            list.appendChild(li);
+        }
+    </script>
+
+</body>
+
+</html>
